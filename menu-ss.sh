@@ -109,6 +109,60 @@ exit 0
 fi
 clear
 clear
+function delssws(){
+    clear
+NUMBER_OF_CLIENTS=$(grep -c -E "^## " "/etc/xray/config.json")
+if [[ ${NUMBER_OF_CLIENTS} == '0' ]]; then
+echo -e "$COLOR1┌─────────────────────────────────────────────────┐${NC}"
+echo -e "$COLOR1│${NC} ${COLBG1}           • DELETE TROJAN USER •              ${NC} $COLOR1│$NC"
+echo -e "$COLOR1└─────────────────────────────────────────────────┘${NC}"
+echo -e "$COLOR1┌─────────────────────────────────────────────────┐${NC}"
+echo -e "$COLOR1│${NC}  • You Dont have any existing clients!"
+echo -e "$COLOR1└─────────────────────────────────────────────────┘${NC}" 
+echo -e "$COLOR1┌──────────────────────${COLBG1} BY $COLOR1───────────────────────┐${NC}"
+echo -e "$COLOR1│${BLUE}                 ${COLBG1}•$NC Arya Blitar ${COLBG1}•                 $COLOR1│$NC"
+echo -e "$COLOR1└─────────────────────────────────────────────────┘${NC}" 
+echo ""
+read -n 1 -s -r -p "   Press any key to back on menu"
+menu-ss
+fi
+clear
+echo -e "$COLOR1┌─────────────────────────────────────────────────┐${NC}"
+echo -e "$COLOR1│${NC} ${COLBG1}           • DELETE TROJAN USER •              ${NC} $COLOR1│$NC"
+echo -e "$COLOR1└─────────────────────────────────────────────────┘${NC}"
+echo -e "$COLOR1┌─────────────────────────────────────────────────┐${NC}"
+grep -E "^## " "/etc/xray/config.json" | cut -d ' ' -f 2-3 | column -t | sort | uniq | nl
+echo -e "$COLOR1│${NC}"
+echo -e "$COLOR1│${NC}  • [NOTE] Press any key to back on menu"
+echo -e "$COLOR1└─────────────────────────────────────────────────┘${NC}"
+echo -e "$COLOR1───────────────────────────────────────────────────${NC}"
+read -rp "   Input Username : " user
+if [ -z $user ]; then
+menu-ss
+else
+exp=$(grep -wE "^## $user" "/etc/xray/config.json" | cut -d ' ' -f 3 | sort | uniq)
+sed -i "/^## $user $exp/,/^},{/d" /etc/xray/config.json
+systemctl restart xray > /dev/null 2>&1
+rm /home/vps/public_html/ss-ws/ss-$user.txt
+clear
+echo -e "$COLOR1┌─────────────────────────────────────────────────┐${NC}"
+echo -e "$COLOR1│${NC} ${COLBG1}           • DELETE TROJAN USER •              ${NC} $COLOR1│$NC"
+echo -e "$COLOR1└─────────────────────────────────────────────────┘${NC}"
+echo -e "$COLOR1┌─────────────────────────────────────────────────┐${NC}"
+echo -e "$COLOR1│${NC}   • Accound Delete Successfully"
+echo -e "$COLOR1│${NC}"
+echo -e "$COLOR1│${NC}   • Client Name : $user"
+echo -e "$COLOR1│${NC}   • Expired On  : $exp"
+echo -e "$COLOR1└─────────────────────────────────────────────────┘${NC}" 
+echo -e "$COLOR1┌──────────────────────${COLBG1} BY $COLOR1───────────────────────┐${NC}"
+echo -e "$COLOR1│${BLUE}                 ${COLBG1}•$NC Arya Blitar ${COLBG1}•                 $COLOR1│$NC"
+echo -e "$COLOR1└─────────────────────────────────────────────────┘${NC}"
+echo ""
+read -n 1 -s -r -p "   Press any key to back on menu"
+menu-ss
+fi
+}
+
 function add-ssws(){
 clear
 domain=$(cat /etc/xray/domain)
@@ -578,7 +632,7 @@ menu
 }
 function renewws(){
 clear
-NUMBER_OF_CLIENTS=$(grep -c -E "^### " "/etc/xray/config.json")
+NUMBER_OF_CLIENTS=$(grep -c -E "^## " "/etc/xray/config.json")
 	if [[ ${NUMBER_OF_CLIENTS} == '0' ]]; then
 		clear
         echo -e "\033[0;34m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
@@ -683,9 +737,8 @@ echo -e " $PURPLE┌────────────────────
 echo -e "     ${BICyan}[${BIWhite}1${BICyan}]${NC} Create Shadowsock Account     "
 echo -e "     ${BICyan}[${BIWhite}2${BICyan}]${NC} Trial Shadowsock Account     "
 echo -e "     ${BICyan}[${BIWhite}3${BICyan}]${NC} Delete Shadowsock Account     "
-echo -e "     ${BICyan}[${BIWhite}4${BICyan}]${NC} Renew Shadowsock Account     "
-echo -e "     ${BICyan}[${BIWhite}5${BICyan}]${NC} Cek User Active XRAY     "
-echo -e "     ${BICyan}[${BIWhite}6${BICyan}]${NC} Detail Shadowsock Account     "
+echo -e "     ${BICyan}[${BIWhite}4${BICyan}]${NC} Delete Shadowsock Trial Account     "
+echo -e "     ${BICyan}[${BIWhite}5${BICyan}]${NC} Renew Shadowsock Account     "
 echo -e " "
 echo -e "     ${GREEN}[0]${NC} Back To Menu      "
 echo -e "${PURPLE}└───────────────────────────────────────────────┘${NC}"
@@ -695,10 +748,9 @@ echo -e ""
 case $opt in
 1) clear ; add-ssws ;;
 2) clear ; trialssws ;;
-3) clear ; delws ;;
-4) clear ; renewws;;
-5) clear ; cekws ;;
-6) clear ; detailssws ;;
+3) clear ; delssws ;;
+4) clear ; delws ;;
+5) clear ; renewws ;;
 0) clear ; menu ;;
 *) echo -e "" ; echo "Press any key to back on menu" ; sleep 1 ; menu ;;
 esac
