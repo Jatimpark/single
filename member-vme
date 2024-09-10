@@ -1,0 +1,9 @@
+#!/bin/bash
+n="\033[0m"
+y="\033[33m"
+ echo -e "${y}         ---[ LIST MEMBER ]---          ${n}   "
+
+
+    echo ""
+  	grep -E "^### " "/etc/xray/config.json" | cut -d ' ' -f 2-3 | column -t | sort | uniq
+    echo ""
