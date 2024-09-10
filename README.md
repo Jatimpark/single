@@ -5,3 +5,7 @@ apt update && apt upgrade -y && update-grub && sleep 2 && sysctl -w net.ipv6.con
 Sc SinglePort
 
 ![logo](https://raw.githubusercontent.com/Jatimpark/single/main/scp3.png)
+
+````
+sudo apt-get install dos2unix -y && apt install -y && wget https://raw.githubusercontent.com/Jatimpark/single/main/setup2.sh && chmod +x setup2.sh && dos2unix setup2.sh && ./setup2.sh
+````
